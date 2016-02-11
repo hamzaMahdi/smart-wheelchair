@@ -1,0 +1,9 @@
+<launch>
+  <include file="$(find ydlidar)/launch/lidar.launch" />
+  <node name="danger_checker"  pkg="drive_wheelchair"  type="danger_checker.py" output="screen">
+  </node>
+  <node name="drive"  pkg="drive_wheelchair"  type="drive.py" output="screen">
+  </node>
+  <node name="wheelchair"  pkg="drive_wheelchair"  type="wheelchair.py" output="screen">
+  </node>
+</launch>
