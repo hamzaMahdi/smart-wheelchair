@@ -1,15 +1,6 @@
 #include <Arduino.h>
 
 /*****************************************************************
-LSM9DS1_Basic_I2C.ino
-SFE_LSM9DS1 Library Simple Example Code - I2C Interface
-Jim Lindblom @ SparkFun Electronics
-Original Creation Date: April 30, 2015
-https://github.com/sparkfun/LSM9DS1_Breakout
-
-The LSM9DS1 is a versatile 9DOF sensor. It has a built-in
-accelerometer, gyroscope, and magnetometer. Very cool! Plus it
-functions over either SPI or I2C.
 
 This Arduino sketch is a demo of the simple side of the
 SFE_LSM9DS1 library. It'll demo the following:
@@ -28,30 +19,18 @@ SFE_LSM9DS1 library. It'll demo the following:
 Hardware setup: This library supports communicating with the
 LSM9DS1 over either I2C or SPI. This example demonstrates how
 to use I2C. The pin-out is as follows:
-	LSM9DS1 --------- Arduino
-	 SCL ---------- SCL (A5 on older 'Duinos')
-	 SDA ---------- SDA (A4 on older 'Duinos')
-	 VDD ------------- 3.3V
-	 GND ------------- GND
+  LSM9DS1 --------- Arduino
+   SCL ---------- SCL (A5 on older 'Duinos')
+   SDA ---------- SDA (A4 on older 'Duinos')
+   VDD ------------- 3.3V
+   GND ------------- GND
 (CSG, CSXM, SDOG, and SDOXM should all be pulled high.
 Jumpers on the breakout board will do this for you.)
 
 The LSM9DS1 has a maximum voltage of 3.6V. Make sure you power it
 off the 3.3V rail! I2C pins are open-drain, so you'll be
 (mostly) safe connecting the LSM9DS1's SCL and SDA pins
-directly to the Arduino.
-
-Development environment specifics:
-	IDE: Arduino 1.6.3
-	Hardware Platform: SparkFun Redboard
-	LSM9DS1 Breakout Version: 1.0
-
-This code is beerware. If you see me (or any other SparkFun
-employee) at the local, and you've found our code helpful,
-please buy us a round!
-
-Distributed as-is; no warranty is given.
-*****************************************************************/
+directly to the Arduino.*/
 // The SFE_LSM9DS1 library requires both Wire and SPI be
 // included BEFORE including the 9DS1 library.
 #include <Wire.h>
@@ -69,8 +48,8 @@ LSM9DS1 imu;
 // Example I2C Setup //
 ///////////////////////
 // SDO_XM and SDO_G are both pulled high, so our addresses are:
-#define LSM9DS1_M	0x1E // Would be 0x1C if SDO_M is LOW
-#define LSM9DS1_AG	0x6B // Would be 0x6A if SDO_AG is LOW
+#define LSM9DS1_M 0x1E // Would be 0x1C if SDO_M is LOW
+#define LSM9DS1_AG  0x6B // Would be 0x6A if SDO_AG is LOW
 
 ////////////////////////////
 // Sketch Output Settings //
@@ -113,9 +92,11 @@ void setup()
     while (1)
       ;
   }
-  for (int cal_int = 0; cal_int < 1000 ; cal_int ++){
-    if ( imu.gyroAvailable() )                 //Read the raw acc and gyro data from the MPU-6050 for 1000 times
+  for (int cal_int = 0; cal_int < 1000 ;cal_int++ ){
+    if ( imu.gyroAvailable() ) {                //Read the raw acc and gyro data from the MPU-6050 for 1000 times
       imu.readGyro();
+      //cal_int++;
+    }
     gyro_x_cal += imu.calcGyro(imu.gx);                                              //Add the gyro x offset to the gyro_x_cal variable
     gyro_y_cal += imu.calcGyro(imu.gy);                                              //Add the gyro y offset to the gyro_y_cal variable
     gyro_z_cal += imu.calcGyro(imu.gz);                                              //Add the gyro z offset to the gyro_z_cal variable
@@ -230,16 +211,30 @@ void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
   heading *= 180.0 / PI;
   pitch *= 180.0 / PI;
   roll  *= 180.0 / PI;
-  Serial.print("janky estimated angle is ");
-  Serial.println(gyro_angle);
-  Serial.print("Pitch, Roll: ");
+  //Serial.print("janky estimated angle is ");
+  //Serial.println(gyro_angle);
+  //Serial.print("Pitch, Roll: ");
   Serial.print(pitch, 2);
   Serial.print(", ");
   Serial.println(roll, 2);
-  Serial.print("Heading: "); Serial.println(heading, 2);
-
+  //Serial.print("Heading: "); Serial.println(heading, 2);
 }
 
+void print_matlab(){
+  Serial.print(millis()/1000);
+  Serial.print(",");
+  Serial.print(imu.calcAccel(imu.ax), 2);
+  Serial.print(", ");
+  Serial.print(imu.calcAccel(imu.ay), 2);
+  Serial.print(", ");
+  Serial.print(imu.calcAccel(imu.az), 2);
+  Serial.print(", ");
+  Serial.print(imu.calcGyro(imu.gx), 2);
+  Serial.print(", ");
+  Serial.print(imu.calcGyro(imu.gy), 2);
+  Serial.print(", ");
+  Serial.println(imu.calcGyro(imu.gz), 2);
+}
 void loop()
 {
   // Update the sensor values whenever new data is available
@@ -267,17 +262,17 @@ void loop()
 
   if ((lastPrint + PRINT_SPEED) < millis())
   {
-    printGyro();  // Print "G: gx, gy, gz"
-    printAccel(); // Print "A: ax, ay, az"
-    printMag();   // Print "M: mx, my, mz"
+    //printGyro();  // Print "G: gx, gy, gz"
+    //printAccel(); // Print "A: ax, ay, az"
+    //printMag();   // Print "M: mx, my, mz"
     // Print the heading and orientation for fun!
     // Call print attitude. The LSM9DS1's mag x and y
     // axes are opposite to the accelerometer, so my, mx are
     // substituted for each other.
     printAttitude(imu.ax, imu.ay, imu.az,
                  -imu.my, -imu.mx, imu.mz);
-    Serial.println();
-
+    //print_matlab();
+    //Serial.println();
     lastPrint = millis(); // Update lastPrint time
   }
 }
