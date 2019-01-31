@@ -62,39 +62,7 @@ void setup() {
 }
 
 void loop() {
-  btnStart.update(); // update the button status
-
-  if (btnStart.fell()) { // button pressed
-    if (!startReading) {   // if not in reading mode
-      startReading = true; // change to reading mode
-      digitalWrite(LED_BUILTIN, HIGH); // on the onboard LED, for visual indicator  
-      Serial.println("Start Sensor Read ----- ");
-    } else { // currently in reading mode, should stop reading and brake DC brushed motor
-      pusherESC.writeMicroseconds(THROTTLE_BAKE); // brake DC brushed motor
-      startReading = false; // change to stop reading mode
-      throttle = THROTTLE_BAKE;
-      digitalWrite(LED_BUILTIN, LOW); // off the onboard LED, for visual indicator
-      Serial.println("Stop Sensor Read ----- ");
-      Serial.println("Bake ");
-    }
-  }
-
-  if (startReading) { // in reading mode
-    int sensorValue = analogRead(PIN_PMETER); // update reading from Potentiometer
-
-    int newThrottle  = map(sensorValue, 0, 1023, THROTTLE_MIN, THROTTLE_MAX); 
-    int throttleDiff = abs(newThrottle - throttle);
-
-    if (throttleDiff > 5) { // update ESC only when the reading differ by 5
-      throttle = newThrottle;
-      Serial.print("Sensor Read : ");
-      Serial.print(sensorValue);
-    
-      Serial.print("Throttle Value : ");
-      Serial.println(throttle);
-      pusherESC.writeMicroseconds(throttle); // update ESC
-    }
-  }
-        pusherESC.writeMicroseconds(1000); // update ESC
+ 
+ pusherESC.writeMicroseconds(1000); // update ESC
 
 }
