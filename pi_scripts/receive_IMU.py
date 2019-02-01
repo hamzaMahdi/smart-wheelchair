@@ -25,12 +25,12 @@ while 1:
 		if data_end != -1:
 			data = data.split(',')
 			for c in line:
-      			c.strip()
-      			if(i==0):
-        			x = float(c) 
-      			else:
-        			y = float(c)
-      			i= i+1
+				c.strip()
+				if(i==0):
+					x = float(c) 
+				else:
+					y = float(c)
+				i= i+1
 			print (data)
 #			data = ""
 		if(abs(x)>abs(y)) : 
