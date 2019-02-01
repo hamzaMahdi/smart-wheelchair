@@ -12,41 +12,44 @@ IO.setmode (IO.BOARD)         #we are programming the GPIO by BCM pin numbers. (
 
 IO.setup(35,IO.OUT)           
 IO.setup(32,IO.OUT)
-p = IO.PWM(35,100)          
-q = IO.PWM(32,100)
+p = IO.PWM(35,500)          
+q = IO.PWM(32,500)
 p.start(75)                              
 q.start(75)
 data = ""
 x = 75
 y = 76
+data = ""
 while 1:
+	i = 0
 	try:
-		data = (sock.recv(100024)).decode("utf-8") 
+		data += (sock.recv(100024)).decode("utf-8") 
 		#data += (sock.recv(1024)).decode("utf-8")
 		data_end = data.find("\n")
 		if data_end != -1:
 			data = data.split(',')
-			for c in line:
+			print(data)
+			for c in data:
 				c.strip()
 				if(i==0):
 					x = float(c) 
 				else:
 					y = float(c)
 				i= i+1
-			print (data)
-#			data = ""
+				print (float(c))
+			data = ""
 		if(abs(x)>abs(y)) : 
 			x = numpy.interp(x,[-90,90],[50,100]) #rescale ACCEL to MOTOR values
 			p.ChangeDutyCycle(x)
 			q.ChangeDutyCycle(x)
 
 		else:
-			if(y<0):
-				y1 = numpy.interp(y,[-90,90],[50,100]) #rescale ACCEL to MOTOR values
-				y2 = numpy.interp(y,[-90,90],[100,50]) #rescale ACCEL to MOTOR values
-			else:
+#			if(y<0):
+			y1 = numpy.interp(y,[-90,90],[50,100]) #rescale ACCEL to MOTOR values
+			y2 = numpy.interp(y,[-90,90],[100,50]) #rescale ACCEL to MOTOR values
+			'''else:
 				y1 = numpy.interp(y,[-90,90],[100,50]) #rescale ACCEL to MOTOR values
-				y2 = numpy.interp(y,[-90,90],[50,100]) #rescale ACCEL to MOTOR values
+				y2 = numpy.interp(y,[-90,90],[50,100]) #rescale ACCEL to MOTOR values'''
 			p.ChangeDutyCycle(y1)
 			q.ChangeDutyCycle(y2)
 	except KeyboardInterrupt:
