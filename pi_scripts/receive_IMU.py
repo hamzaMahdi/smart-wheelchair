@@ -17,6 +17,8 @@ q = IO.PWM(32,100)
 p.start(75)                              
 q.start(75)
 data = ""
+x = 75
+y = 76
 while 1:
 	try:
 		data = (sock.recv(100024)).decode("utf-8") 
