@@ -38,6 +38,10 @@ while 1:
 				i= i+1
 				print (float(c))
 			data = ""
+		if(abs(x)>90):
+			x = x/x*90
+		if(abs(y)>90):
+			y = y/y*90
 		if(abs(x)>abs(y)) : 
 			x = numpy.interp(x,[-90,90],[50,100]) #rescale ACCEL to MOTOR values
 			p.ChangeDutyCycle(x)
