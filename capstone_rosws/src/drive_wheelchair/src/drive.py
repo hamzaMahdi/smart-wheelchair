@@ -5,8 +5,7 @@ import time                            #calling time to provide delays in progra
 from std_msgs.msg import Float32MultiArray
 IO.setwarnings(False)           #do not show any warnings
 
-IO.setmode (IO.BOARD)         #we are programming the GPIO by BCM pin numbers. (PIN35 as ‘GPIO19’)
-
+IO.setmode (IO.BOARD)
 IO.setup(35,IO.OUT)           
 IO.setup(32,IO.OUT)
 p = IO.PWM(35,500)          
