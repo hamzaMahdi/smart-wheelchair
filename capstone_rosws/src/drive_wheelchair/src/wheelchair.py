@@ -16,7 +16,9 @@ def sender():
 		pub = rospy.Publisher('motors', Float32MultiArray, queue_size=1)
 		rospy.init_node('controller', anonymous=True)
 		rate = rospy.Rate(10) # 10hz
-
+		data = ""
+		x = 75
+		y = 76
 		hello_float = Float32MultiArray()
 		hello_float.data = []
 		while not rospy.is_shutdown():
@@ -42,12 +44,15 @@ def sender():
 				y = y/y*90
 			if(abs(x)>abs(y)) : 
 				x = numpy.interp(x,[-90,90],[50,100]) #rescale ACCEL to MOTOR values
+				hello_float.data = [x,x]
 			else:
 				y1 = numpy.interp(y,[-90,90],[50,100]) #rescale ACCEL to MOTOR values
 				y2 = numpy.interp(y,[-90,90],[100,50]) #rescale ACCEL to MOTOR values
-			hello_float.data = []
-			hello_float.data.insert([x,y])
+				hello_float.data = [y1,y2]
+			#hello_float.data = []
+			#hello_float.data=([x,y])
 			pub.publish(hello_float)
+			rospy.loginfo(hello_float)
 			rate.sleep()
 
 try:
