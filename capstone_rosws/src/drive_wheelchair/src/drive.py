@@ -15,6 +15,7 @@ p.start(75)
 q.start(75)
 stop  = False
 def callback(data):
+    global stop
     if(stop ==True):
         data.data[0] = 75
         data.data[1] = 75
