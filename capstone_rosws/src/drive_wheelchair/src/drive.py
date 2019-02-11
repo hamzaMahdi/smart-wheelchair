@@ -24,7 +24,7 @@ def callback(data):
     q.ChangeDutyCycle(data.data[1])
 def danger_callback(flag):
     global stop
-    rospy.loginfo(rospy.get_caller_id() + "Stop is  %s", stop)
+    rospy.loginfo(rospy.get_caller_id() + "Stop is  %s", flag)
     if(flag==True):
         stop = False
     else:
