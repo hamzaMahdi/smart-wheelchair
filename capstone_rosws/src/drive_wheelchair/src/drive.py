@@ -17,12 +17,13 @@ stop  = False
 def callback(data):
     #global stop
     if(stop ==True):
-        data.data[0] = 75
-        data.data[1] = 75
+        p.ChangeDutyCycle(75)
+        q.ChangeDutyCycle(75)
         print "stopping the motors"
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-    p.ChangeDutyCycle(data.data[0])
-    q.ChangeDutyCycle(data.data[1])
+    else:
+        rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
+        p.ChangeDutyCycle(data.data[0])
+        q.ChangeDutyCycle(data.data[1])
 def danger_callback(flag):
     global stop
     rospy.loginfo(rospy.get_caller_id() + "Stop is  %s", flag)
