@@ -26,9 +26,9 @@ def danger_callback(flag):
     global stop
     rospy.loginfo(rospy.get_caller_id() + "Stop is  %s", stop)
     if(flag==True):
-        stop = True
+        stop = False
     else:
-        stop  = False
+        stop  = True
 
 def listener():
 
