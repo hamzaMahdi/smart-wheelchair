@@ -31,6 +31,8 @@ def danger_callback(flag):
         stop = False
     else:
         stop  = True
+        p.ChangeDutyCycle(75)
+        q.ChangeDutyCycle(75)
     #print(stop)
 
 def listener():
