@@ -16,11 +16,13 @@ def check_obstacles(data):
 	front = [data.ranges[i] for i in range(0,90)]
 	front +=[data.ranges[i] for i in range(650,720)]
 	#print front
-	avg = numpy.mean(front)
-	if (avg>1):
-		flag = True
-	else :
-		flage  = False
+	for i in range(len(front)/20):
+		avg = numpy.mean(front[i*20:(i+1)*20])
+		if (avg>1):
+			flag = True
+			break
+		else :
+			flage  = False
 	pub.publish(flag)
 rospy.init_node('danger_checker', anonymous=True)
 rospy.Subscriber("/scan", LaserScan, check_obstacles,queue_size=1)
