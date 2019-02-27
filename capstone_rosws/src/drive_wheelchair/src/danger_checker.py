@@ -16,8 +16,9 @@ def check_obstacles(data):
 	front = [data.ranges[i] for i in range(0,90)]
 	front +=[data.ranges[i] for i in range(650,720)]
 	#print front
-	for i in range(len(front)/20):
-		avg = numpy.mean(front[i*20:(i+1)*20])
+	window =  50
+	for i in range(len(front)/window):
+		avg = numpy.mean(front[i*window:(i+1)*window])
 		if (avg>1):
 			flag = True
 			break
