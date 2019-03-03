@@ -6,7 +6,7 @@ import numpy
 import rospy
 import serial
 from std_msgs.msg import Float32MultiArray
-ser = serial.Serial('/dev/ttyACM0',115200)
+ser = serial.Serial('/dev/ttyUSB0',115200)
 bd_addr = "98:D3:21:FC:88:AB" 
 port = 1
 #sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
@@ -49,40 +49,23 @@ def sender():
 				data = ""
 			if(abs(x)>90):
 				x = x/x*90
-				speed = 0
 			if(abs(y)>90):
 				y = y/y*90
-				speed = 0
 
 
 			if(z>700):
 				break	#Shut Down algorithm
 			elif(z<-700):	#Positive Yaw
-				cycle = speed/100
-				while speed != 0:
-					speed = speed - cycle
-				speed= 0 #Restart speed after 
+				x = 75
+				y = 76
 
-			elif(abs(x)>abs(y) and abs(x)>30 and abs(x)>abs(speed)) :	#Implement a specific range 30 to 90 
-				speed = x	#Take the highest speed until 90
-				if (x>0) :
-					x = numpy.interp(x,[30,90],[75,100]) #rescale ACCEL to MOTOR values
-
-				else:
-					x = numpy.interp(x,[-90,-30],[75,50]) #rescale ACCEL to MOTOR values
-				
+			elif(abs(x)>abs(y) and abs(x)>30) :	#Implement a specific range 30 to 90 
+				x = numpy.interp(x,[-90,90],[50,99]) #rescale ACCEL to MOTOR values
 				hello_float.data = [x,x]
-			elif(abs(y)>abs(x) and abs(y)>30 and abs(y)>abs(speed)): #Implement a specific range 30 to 90
-				speed = y #Take the highest speed until 90
-				if (y>0):
-					y1 = numpy.interp(y,[30,90],[75,100]) #rescale ACCEL to MOTOR values
-					y2 = numpy.interp(y,[30,90],[75,50]) #rescale ACCEL to MOTOR values
-				else:
-					y1 = numpy.interp(y,[-90,-30],[75,50]) #rescale ACCEL to MOTOR values
-					y2 = numpy.interp(y,[-90,-30],[75,100]) #rescale ACCEL to MOTOR values
+			elif(abs(y)>abs(x) and abs(y)>30): #Implement a specific range 30 to 90
+				y1 = numpy.interp(y,[-90,90],[50,99]) #rescale ACCEL to MOTOR values
+				y2 = numpy.interp(y,[-90,90],[99,50]) #rescale ACCEL to MOTOR values
 				hello_float.data = [y1,y2]
-			#hello_float.data = []
-			#hello_float.data=([x,y])
 			pub.publish(hello_float)
 			rospy.loginfo(hello_float)
 			rate.sleep()
