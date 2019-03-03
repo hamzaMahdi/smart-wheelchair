@@ -1,0 +1,2 @@
+drive_wheelchair:imu_visual:point_cloud:point_cloud_high_fidelty:ydlidar-master
+-DCATKIN_DEVEL_PREFIX=/home/abdo/captstone/capstone_rosws/devel -DCMAKE_INSTALL_PREFIX=/home/abdo/captstone/capstone_rosws/install -G Unix Makefiles

@@ -1,0 +1,8 @@
+prefix=/home/abdo/captstone/capstone_rosws/devel
+
+Name: imu_visual
+Description: Description of imu_visual
+Version: 0.0.0
+Cflags: -I/home/abdo/captstone/capstone_rosws/devel/include
+Libs: -L/home/abdo/captstone/capstone_rosws/devel/lib 
+Requires: geometry_msgs roscpp rospy sensor_msgs std_msgs message_runtime

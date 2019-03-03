@@ -1,0 +1,8 @@
+prefix=/home/abdo/captstone/capstone_rosws/devel
+
+Name: drive_wheelchair
+Description: Description of drive_wheelchair
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/abdo/captstone/capstone_rosws/devel/lib 
+Requires: 
