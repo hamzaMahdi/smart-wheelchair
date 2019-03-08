@@ -58,7 +58,7 @@ SoftwareSerial bt (2,3);  //RX, TX (Switched on the Bluetooth - RX -> TX | TX ->
 ////////////////////////////
 #define PRINT_CALCULATED
 //#define PRINT_RAW
-#define PRINT_SPEED 1000 // 1000 ms between prints
+#define PRINT_SPEED 500 // 1000 ms between prints
 static unsigned long lastPrint = 0; // Keep track of print time
 
 // Earth's magnetic field varies by location. Add or subtract
@@ -129,6 +129,7 @@ void printGyro()
   bt.println(" deg/s");
 
   gyro_angle+=imu.calcGyro(imu.gz)-gyro_z_cal;//assuming one second passed
+  bt.print(gyro_angle);
 
 #elif defined PRINT_RAW
   bt.print(imu.gx);
@@ -218,7 +219,9 @@ void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
   //Serial.print("Pitch, Roll: ");
   bt.print(pitch, 2);
   bt.print(", ");
-  bt.println(roll, 2);
+  bt.print(roll, 2);
+  //bt.print(", ");
+  
   //Serial.print("Heading: "); bt.println(heading, 2);
 }
 
@@ -272,12 +275,15 @@ void loop()
     // Call print attitude. The LSM9DS1's mag x and y
     // axes are opposite to the accelerometer, so my, mx are
     // substituted for each other.
+    
     printAttitude(imu.ax, imu.ay, imu.az,
                  -imu.my, -imu.mx, imu.mz);
+                 //printGyro();
+                 bt.println();
     //print_matlab();
     //bt.println();
     lastPrint = millis(); // Update lastPrint time
-    delay (500); //prepare for data (0.5s)
+    delay (5); //prepare for data (0.5s)
 
   }
   
