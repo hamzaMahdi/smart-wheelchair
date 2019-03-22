@@ -31,7 +31,7 @@
  *///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define THROTTLE_MIN        1500
 #define THROTTLE_MAX        2000
-#define THROTTLE_BAKE       1000
+#define THROTTLE_BRAKE       1000
 // End of ESC setting ///////////////////////////////////////////////////////////////////////////////////
 
 int     throttle      = THROTTLE_MIN; // default throttle
@@ -63,6 +63,6 @@ void setup() {
 
 void loop() {
  
- pusherESC.writeMicroseconds(1000); // update ESC
+ pusherESC.writeMicroseconds(1550); // update ESC
 
 }
