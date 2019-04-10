@@ -8,4 +8,3 @@
 
 # modified environment variables
 export PWD="/home/abdo/captstone/capstone_rosws/build"
-export PYTHONPATH="/home/abdo/captstone/capstone_rosws/devel/lib/python2.7/dist-packages:$PYTHONPATH"

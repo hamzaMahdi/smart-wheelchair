@@ -7,6 +7,7 @@
 subdirs(gtest)
 subdirs(drive_wheelchair)
 subdirs(imu_visual)
+subdirs(rtimulib_ros)
 subdirs(point_cloud)
 subdirs(point_cloud_high_fidelty)
 subdirs(ydlidar-master)

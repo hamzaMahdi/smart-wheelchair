@@ -65,7 +65,7 @@ static unsigned long lastPrint = 0; // Keep track of print time
 // a declination to get a more accurate heading. Calculate
 // your's here:
 // http://www.ngdc.noaa.gov/geomag-web/#declination
-#define DECLINATION -8.58 // Declination (degrees) in Boulder, CO.
+#define DECLINATION -10 // Declination (degrees) in Boulder, CO.
 float gyro_angle = 0;
 float gyro_x_cal, gyro_y_cal, gyro_z_cal;//those will account for gyro drift hopefully
 
@@ -109,6 +109,9 @@ void setup()
   gyro_x_cal /= 1000;
   gyro_y_cal /= 1000;
   gyro_z_cal /= 1000;
+
+    imu.calibrate();         //calibrates but does not store bias
+    imu.calibrateMag();       //calibrates and stores bias
 }
 
 
@@ -116,20 +119,20 @@ void printGyro()
 {
   // Now we can use the gx, gy, and gz variables as we please.
   // Either print them as raw ADC values, or calculated in DPS.
-  bt.print("G: ");
+  //bt.print("G: ");
 #ifdef PRINT_CALCULATED
   // If you want to print calculated values, you can use the
   // calcGyro helper function to convert a raw ADC value to
   // DPS. Give the function the value that you want to convert.
-  bt.print(imu.calcGyro(imu.gx), 2);
-  bt.print(", ");
-  bt.print(imu.calcGyro(imu.gy), 2);
-  bt.print(", ");
-  bt.print(imu.calcGyro(imu.gz), 2);
-  bt.println(" deg/s");
+ // bt.print(imu.calcGyro(imu.gx), 2);
+  //bt.print(", ");
+  //bt.print(imu.calcGyro(imu.gy), 2);
+  //bt.print(", ");
+  //bt.print(imu.calcGyro(imu.gz), 2);
+  //bt.println(" deg/s");
 
   gyro_angle+=imu.calcGyro(imu.gz)-gyro_z_cal;//assuming one second passed
-  bt.print(gyro_angle);
+  //bt.print(gyro_angle);
 
 #elif defined PRINT_RAW
   bt.print(imu.gx);
@@ -196,8 +199,30 @@ void printMag()
 // http://www51.honeywell.com/aero/common/documents/myaerospacecatalog-documents/Defense_Brochures-documents/Magnetic__Literature_Application_notes-documents/AN203_Compass_Heading_Using_Magnetometers.pdf
 void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
 {
-  float roll = atan2(ay, az);
-  float pitch = atan2(-ax, sqrt(ay * ay + az * az));
+
+ 
+   //pitch = atan2 (accelY ,( sqrt ((accelX * accelX) + (accelZ * accelZ))));
+   //roll = atan2(-accelX ,( sqrt((accelY * accelY) + (accelZ * accelZ))));
+
+
+
+
+    //roll = roll*57.3;
+    //pitch = pitch*57.3;
+    //yaw = yaw*57.3;
+
+
+
+  float yaw;
+  float pitch = atan2(ay, sqrt(ax*ax+az*az));
+  float roll = atan2(-ax, sqrt(ay * ay + az * az));
+
+   // yaw from mag
+
+   float Yh = (my * cos(roll)) - (mz * sin(roll));
+   float Xh = (mx * cos(pitch))+(my * sin(roll)*sin(pitch)) + (mz * cos(roll) * sin(pitch));
+
+   yaw =  atan2(Yh, Xh);
 
   float heading;
   if (my == 0)
@@ -217,9 +242,12 @@ void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
   //bt.print("janky estimated angle is ");
   //Serial.println(gyro_angle);
   //Serial.print("Pitch, Roll: ");
+  bt.print(roll, 2);
+  bt.print(", ");
   bt.print(pitch, 2);
   bt.print(", ");
-  bt.print(roll, 2);
+  bt.print(heading, 2);
+  
   //bt.print(", ");
   
   //Serial.print("Heading: "); bt.println(heading, 2);
@@ -275,7 +303,7 @@ void loop()
     // Call print attitude. The LSM9DS1's mag x and y
     // axes are opposite to the accelerometer, so my, mx are
     // substituted for each other.
-    
+    printGyro();
     printAttitude(imu.ax, imu.ay, imu.az,
                  -imu.my, -imu.mx, imu.mz);
                  //printGyro();

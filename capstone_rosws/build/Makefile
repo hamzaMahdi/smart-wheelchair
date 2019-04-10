@@ -764,6 +764,19 @@ imu_visual_generate_messages_nodejs/fast:
 .PHONY : imu_visual_generate_messages_nodejs/fast
 
 #=============================================================================
+# Target rules for targets named rtimulib_ros
+
+# Build rule for target.
+rtimulib_ros: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rtimulib_ros
+.PHONY : rtimulib_ros
+
+# fast build rule for target.
+rtimulib_ros/fast:
+	$(MAKE) -f rtimulib_ros/CMakeFiles/rtimulib_ros.dir/build.make rtimulib_ros/CMakeFiles/rtimulib_ros.dir/build
+.PHONY : rtimulib_ros/fast
+
+#=============================================================================
 # Target rules for targets named actionlib_generate_messages_py
 
 # Build rule for target.
@@ -1134,6 +1147,7 @@ help:
 	@echo "... imu_visual_generate_messages_py"
 	@echo "... imu_visual_generate_messages_lisp"
 	@echo "... imu_visual_generate_messages_nodejs"
+	@echo "... rtimulib_ros"
 	@echo "... actionlib_generate_messages_py"
 	@echo "... actionlib_generate_messages_nodejs"
 	@echo "... actionlib_msgs_generate_messages_lisp"

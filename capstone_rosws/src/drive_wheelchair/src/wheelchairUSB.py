@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import bluetooth
-import RPi.GPIO as IO
+#import bluetooth
+#import RPi.GPIO as IO
 import time                            #calling time to provide delays in program
 import numpy
 import rospy
@@ -8,7 +8,7 @@ import serial
 from std_msgs.msg import Float32MultiArray
 bd_addr = "98:D3:21:FC:88:AB" 
 port = 1
-ser = serial.Serial('/dev/ttyUSB6',115200)
+ser = serial.Serial('/dev/ttyUSB0',115200)
 #sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 #sock.connect((bd_addr,port))
 data = ""
